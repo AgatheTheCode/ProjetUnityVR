@@ -2,26 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Object with the capacity to grab
-/// </summary>
 public class Grabber : MonoBehaviour
 {
-    /// <summary>Currently grabbed object or available object</summary>
     private Grabbable ObjectToGrab = null;
-    /// <summary>Are we currently grabbing an object?</summary>
     private bool grabbing = false;
 
-    /// <summary>
-    /// Called when doing a collision with a trigger object
-    /// </summary>
-    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
-        // @TODO: Keep the link to currently available object
+        Grabbable grabbable = other.GetComponent<Grabbable>();
+
+        // Check if the collided object is grabbable
+        if (grabbable != null && !grabbing)
+        {
+            ObjectToGrab = grabbable;
+            // TODO: Notify or show some UI indication that the object can be grabbed
+        }
     }
 
-    // @TODO: Detect when the object is no longer available (end of collision)
+    private void OnTriggerExit(Collider other)
+    {
+        Grabbable grabbable = other.GetComponent<Grabbable>();
 
-    // @TODO: Add the properties and methods to grasp the object and release it
+        // Check if the collided object is the currently grabbable object
+        if (grabbable != null && grabbable == ObjectToGrab)
+        {
+            ObjectToGrab = null;
+            // TODO: Remove any UI indication that the object can be grabbed
+        }
+    }
+
+    // Call this method to grab the currently available object
+    public void Grab()
+    {
+        if (ObjectToGrab != null && !grabbing)
+        {
+            grabbing = true;
+            ObjectToGrab.OnGrab(); // You may want to implement an OnGrab method in your Grabbable script
+            // TODO: Implement the logic to attach the object to the hand or controller
+        }
+    }
+
+    // Call this method to release the currently grabbed object
+    public void Release()
+    {
+        if (grabbing)
+        {
+            grabbing = false;
+            ObjectToGrab.OnRelease(); // You may want to implement an OnRelease method in your Grabbable script
+            // TODO: Implement the logic to detach the object from the hand or controller
+            ObjectToGrab = null;
+        }
+    }
 }
