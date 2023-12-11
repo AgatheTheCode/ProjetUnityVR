@@ -48,7 +48,7 @@ public class Grabbable : MonoBehaviour
     /// Grabs the object
     /// </summary>
     /// <param name="grabber">Object at the origin of the grab</param>
-    public void Grab(Grabber grabber)
+    public void OnGrab(Grabber grabber)
     {
         initialParent = transform.parent;
         initialLocalPosition = transform.localPosition;

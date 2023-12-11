@@ -16,9 +16,9 @@ public class NavigationTeleport : MonoBehaviour
     /// <summary>Player to move</summary>
     private GameObject Player;
 
-    [SerializeField, Tooltip("Movement speed")]
+    //[SerializeField, Tooltip("Movement speed")]
     /// <summary>Movement speed in m/s</summary>
-    private float MoveSpeed = 1;
+    //private float MoveSpeed = 1;
 
     [SerializeField, Tooltip("Show ray and find target destination")]
     /// <summary>Show ray and find target destination</summary>
@@ -30,11 +30,11 @@ public class NavigationTeleport : MonoBehaviour
     {
         // @TODO: Create function using HandRayCastParabolic
         //on hold of secondary button, show ray
-        if(secondaryButton.action.ReadValue<float>() == 1)
+        if (secondaryButton.action.ReadValue<float>() == 1)
         {
             HandRayCastParabolic.gameObject.SetActive(true);
-            
-            if(tertiaryButton.action.ReadValue<float>() == 1)
+
+            if (tertiaryButton.action.ReadValue<float>() == 1)
             {
                 Teleport(context);
             }
@@ -48,7 +48,8 @@ public class NavigationTeleport : MonoBehaviour
         if (secondaryButton.action.ReadValue<float>() == 0)
         {
             HandRayCastParabolic.gameObject.SetActive(false);
-            Player.transform.position = HandRayCastParabolic.ObjectInRay().transform.position;
+            // Use ObjectInSection instead of ObjectInRay
+            Player.transform.position = HandRayCastParabolic.ObjectInSection(transform.position, transform.forward)?.point ?? Player.transform.position;
         }
     }
 }

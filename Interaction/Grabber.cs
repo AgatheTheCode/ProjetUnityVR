@@ -37,7 +37,7 @@ public class Grabber : MonoBehaviour
         if (ObjectToGrab != null && !grabbing)
         {
             grabbing = true;
-            ObjectToGrab.OnGrab(); // You may want to implement an OnGrab method in your Grabbable script
+            ObjectToGrab.OnGrab(this); // Pass the grabber reference to the Grabbable object
             // TODO: Implement the logic to attach the object to the hand or controller
         }
     }
@@ -48,7 +48,7 @@ public class Grabber : MonoBehaviour
         if (grabbing)
         {
             grabbing = false;
-            ObjectToGrab.OnRelease(); // You may want to implement an OnRelease method in your Grabbable script
+            ObjectToGrab.Release();
             // TODO: Implement the logic to detach the object from the hand or controller
             ObjectToGrab = null;
         }

@@ -80,8 +80,19 @@ public class HandRayCastParabolic : MonoBehaviour
     public RaycastHit? ObjectInSection(Vector3 start, Vector3 end)
     {
         // @TODO: Complete this function to look for objects between the start and end positions. Check only for objects with the "Walk" layer
-        return null;
-    }
+        int layerMask = LayerMask.GetMask("Walk"); // Set to the appropriate layer
+
+        RaycastHit hit;
+        if (Physics.Raycast(start, end - start, out hit, Vector3.Distance(start, end), layerMask))
+        {
+            // Check if the hit object is on the "Walk" layer
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Walk"))
+            {
+                return hit;
+            }
+        }
+
+        return null;    }
 
     /// <summary>
     /// Returns the position of the collision
@@ -107,7 +118,7 @@ public class HandRayCastParabolic : MonoBehaviour
         // If not horizontal, check if the angle goes upward or downward
         if (transform.forward.y != 0) a *= (transform.forward.y / Mathf.Abs(transform.forward.y));
 
-        // Get the result : -gx²/2cos²(a)v² + tan(a)x + h (where h is the starting height, g the gravity and v the initial velocity)
+        // Get the result : -gxï¿½/2cosï¿½(a)vï¿½ + tan(a)x + h (where h is the starting height, g the gravity and v the initial velocity)
         float height = -0.5f * ((-Physics.gravity.y * Mathf.Pow(x, 2)) / (Mathf.Pow(Mathf.Cos(a) * initialSpeed, 2)))
             + (Mathf.Tan(a) * x) + transform.position.y;
 
